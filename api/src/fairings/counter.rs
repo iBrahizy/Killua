@@ -42,8 +42,9 @@ impl Fairing for Counter {
         thread::spawn(move || loop {
             thread::sleep(Self::UPDATE_INTERVAL);
 
-            let stats = stats.lock().expect("poisoned lock");
-            db::counter::update_counter(&stats)
+            let mut stats = stats.lock().expect("poisoned lock");
+            db::counter::update_counter(&stats);
+			stats.clear();
         });
     }
 
