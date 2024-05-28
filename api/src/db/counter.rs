@@ -1,6 +1,4 @@
-use std::collections::HashMap;
 use crate::fairings::counter::*;
+use std::collections::HashMap;
 
-pub fn update_counter(data: &HashMap<String, Endpoint>) {
-
-}
+pub fn update_counter(data: &HashMap<String, Endpoint>) {}

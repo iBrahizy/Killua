@@ -36,18 +36,16 @@ impl Fairing for Counter {
         }
     }
 
-	async fn on_liftoff(&self, _: &rocket::Rocket<rocket::Orbit>) {
-    let stats = self.stats.clone();
-                                                                
-    thread::spawn(move || {
-        loop {
+    async fn on_liftoff(&self, _: &rocket::Rocket<rocket::Orbit>) {
+        let stats = self.stats.clone();
+
+        thread::spawn(move || loop {
             thread::sleep(Self::UPDATE_INTERVAL);
-                                                                
+
             let stats = stats.lock().expect("poisoned lock");
             db::counter::update_counter(&stats)
-        }
-    });
-}
+        });
+    }
 
     async fn on_request(&self, req: &mut Request<'_>, _: &mut Data<'_>) {
         let mut stats = self.stats.lock().expect("poisoned lock");
